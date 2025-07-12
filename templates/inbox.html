@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Safe Mailbox</title>
+    <link rel="stylesheet" href="../static/styles.css">
+</head>
+<body class="inbox-page">
+    <div class="main-window">
+        <!-- Title Bar -->
+        <div class="title-bar">
+            <div class="title-bar-text">Inbox – {{ user }}</div>
+        </div>
+
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <form action="{{ url_for('refresh_inbox') }}" method="post">
+            <button type="submit" class="classic-button">Refresh</button>
+            </form>
+        </div>
+
+        <!-- Emails Display -->
+        <div class="right-pane classic-scrollable">
+            {% for email in emails %}
+            <a href="{{ url_for('view_email', email_id=email.id) }}" style="text-decoration: none; color: inherit;">
+            <div class="mail-item {{ 'phishing' if email.is_phishing else 'safe' }}" style="cursor: pointer;">
+                
+                {% if email.is_phishing %}
+                <div class="warning-banner">
+                    ⚠️ Warning: This email may be a phishing attempt! Confidence: {{ email.confidence }}
+                </div>
+                {% endif %}
+
+                <div class="mail-header">
+                    <strong>From:</strong> {{ email.from_email }}<br>
+                    <strong>Date:</strong> {{ email.date }}<br>
+                    <strong>Subject:</strong> {{ email.subject }}
+                    {% if email.is_phishing %}
+                        <span style="color: red; font-weight: bold;">Phishing</span>
+                    {% else %}
+                        <span style="color: green; font-weight: bold;">Safe</span>
+                    {% endif %}
+                </div>
+                <div class="mail-preview">
+                    <div class="mail-preview-content">
+                        <strong>Attachment:</strong> {% if email.contains_attachment %} 📎 {% else %}  {% endif %}
+                    </div>
+                    <br>
+                    <div class="mail-preview-content">{{ email.preview }}</div>
+                </div>
+            </div>
+          </a>
+            {% endfor %}
+        </div>
+
+        <!-- Bottom Bar -->
+        <div class="title-bar bottom-bar">
+            <div class="title-bar-text">Safe Mailbox — Analysis Complete</div>
+        </div>
+    </div>
+</body>
+</html>

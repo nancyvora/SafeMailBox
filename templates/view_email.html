@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Safe Mailbox</title>
+    <link rel="stylesheet" href="../static/styles.css">
+</head>
+<body class="inbox-page">
+    <div class="main-window">
+
+        <!-- Title Bar -->
+        <div class="title-bar">
+            <div class="title-bar-text">Email – {{ email.subject }}</div>
+        </div>
+
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <a href="{{ url_for('inbox') }}" class="classic-button">← Back to Inbox</a>
+        </div>
+
+        <!-- Flash Modal -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div id="scan-alert" class="message-window" style="display: none;">
+        <div class="title-bar">
+            <div class="title-bar-text">Scan Result</div>
+        </div>
+        <div class="window-body">
+            {% for category, message in messages %}
+              {% if category == 'scan_result' %}
+                <p>{{ message }}</p>
+              {% endif %}
+            {% endfor %}
+            <div class="button-group" style="text-align: center;">
+                <button onclick="document.getElementById('scan-alert').style.display='none'" class="classic-button">OK</button>
+            </div>
+        </div>
+    </div>
+  {% endif %}
+{% endwith %}
+
+
+        <!-- Emails Display -->
+        <div class="right-pane classic-scrollable">
+            {% if email.is_phishing %}
+            <div class="warning-banner">
+                ⚠️ Phishing Alert! Confidence: {{ email.confidence }}
+            </div>
+            {% endif %}
+
+            <div class="mail-header">
+                <p><strong>From:</strong> {{ email.from_email }}</p>
+                <p><strong>Date:</strong> {{ email.date }}</p>
+                <p><strong>Subject:</strong> {{ email.subject }}</p>
+                <p><strong>Attachment:</strong> {% if email.contains_attachment %}📎 Yes {% else %} No {% endif %}</p>
+
+                <form method="POST" action="{{ url_for('submit_feedback', email_id=email.id) }}">
+                    <button type="submit" name="feedback" value="phishing" class="classic-button" style="color:red;">Mark as Phishing</button>
+                    <button type="submit" name="feedback" value="safe" class="classic-button" style="color:green;">Mark as Safe</button>
+                </form>
+
+                {% if email.contains_attachment %}
+                <div style="margin-top: 10px;">
+                    <h4>Attachments:</h4>
+                    <ul>
+                        {% for att in email.attachments %}
+                        <li style="margin-bottom: 10px;">
+                            📎 {{ att.filename }}
+                            <div style="display: flex; gap: 8px; margin-top: 4px;">
+                                <a href="{{ url_for('download_attachment', attachment_id=att.id) }}" class="classic-button">Download</a>
+                                <a href="{{ url_for('scan_attachment', attachment_id=att.id) }}" class="classic-button" style="color:orange;">Scan</a>
+                                <form action="{{ url_for('sandbox_attachment', attachment_id=att.id) }}" method="POST" target="_blank" style="display:inline;">
+                                <button type="submit" class="classic-button" style="color:blue;">View in Sandbox</button>
+                                </form>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="mail-body" style="background-color: white; padding: 16px; margin-top: 10px; border: 3px solid #999; font-family: monospace; white-space: pre-wrap; font-size: 14px; line-height: 1.5;">
+                {{ email.body | safe }}
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="title-bar bottom-bar">
+            <div class="title-bar-text">Safe Mailbox</div>
+            {% if email.user_feedback %}
+            <p><strong>User Feedback:</strong> {{ email.user_feedback.capitalize() }}</p>
+            {% endif %}
+        </div>
+    </div>
+
+<script>
+window.onload = function() {
+    const scanAlert = document.getElementById('scan-alert');
+    if (scanAlert) {
+        scanAlert.style.display = 'block';
+    }
+};
+</script>
+
+</body>
+</html>

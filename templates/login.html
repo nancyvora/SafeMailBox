@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safe Mail Box Login</title>
+    <link rel="stylesheet" href="../static/styles.css">
+</head>
+<body>
+    <div class="window">
+        <div class="title-bar">
+            <div class="title-bar-text">Safe Mail Box</div>
+            <div class="title-bar-controls">
+                <button aria-label="Help" class="help-button" onclick="showMessageBox()"></button>
+            </div>
+        </div>
+        <div class="window-body">
+            <form method="POST" action="/login">
+                <div class="form-group">
+                    <label for="email">Email Address:</label>
+                    <input type="email" id="email" name="email" class="classic-input" placeholder="yourname@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">App Password:</label>
+                    <input type="password" id="password" name="password" class="classic-input" placeholder="App Password" required>
+                </div>
+                <div class="button-group">
+                    <button type="submit" class="classic-button default-button">Login</button>
+                    <button type="reset" class="classic-button">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="message-window" id="helpMessageBox">
+        <div class="title-bar">
+            <div class="title-bar-text">Safe Mail Box Help</div>
+            <div class="title-bar-controls">
+                <button aria-label="Close" onclick="hideMessageBox()"></button>
+            </div>
+        </div>
+        <div class="window-body">
+            <p class="message-text">
+                This is a safe mail application.
+            </p>
+            <div class="button-group" style="justify-content: center;">
+                <button class="classic-button default-button" onclick="hideMessageBox()">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showMessageBox() {
+            document.getElementById('helpMessageBox').style.display = 'flex';
+        }
+
+        function hideMessageBox() {
+            document.getElementById('helpMessageBox').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

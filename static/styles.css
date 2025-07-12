@@ -1,0 +1,614 @@
+/* General Body Styles for the overall "desktop" background */
+body {
+    font-family: 'Tahoma', 'Arial', sans-serif;
+    font-size: 13px;
+    background-color: #008080; /* Classic Windows NT 4.0 / 95 teal desktop background */
+    display: flex; /* Use flexbox to center the window */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    min-height: 100vh; /* Ensure body takes at least full viewport height */
+    margin: 0;
+    overflow: hidden; /* Important for full-screen applications */
+    -webkit-font-smoothing: none;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body.inbox-page,
+body.inbox-page .main-window,
+body.inbox-page .content-area {
+    height: 100vh;     /* Full viewport height */
+    max-height: 100vh; /* Prevent overflow */
+}
+
+body.inbox-page .right-pane {
+    overflow-y: auto;
+    max-height: 100%;
+}
+
+
+/* Specific styles for the inbox page body to make it a full-screen window */
+body.inbox-page {
+    background-color: var(--window-bg); /* The main background is now the window grey */
+    display: block; /* Change to block as it will contain the full window */
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    justify-content: unset; /* Ensure these are unset when it's not a centered window */
+    align-items: unset; /* Ensure these are unset when it's not a centered window */
+}
+
+/* Define CSS variables for consistent classic Windows colors */
+:root {
+    --window-bg: #C0C0C0;
+    --border-light: #FFFFFF;
+    --border-dark: #808080;
+    --text-color: #000000;
+    --title-bar-color: #000080; /* Solid dark blue for the title bar */
+    --button-face: #C0C0C0;
+    --button-text: #000000;
+    --input-bg: #FFFFFF;
+    --input-border-inset-dark: #808080;
+    --input-border-inset-light: #FFFFFF;
+    --focus-border: #000080;
+    --active-folder-bg: #000080; /* Dark blue for active folder item */
+    --active-folder-text: #FFFFFF; /* White text for active folder item */
+}
+
+/* Main Window Container for Login Page */
+.window { /* This class is specifically for your login window */
+    background-color: var(--window-bg);
+    border: 2px solid;
+    border-color: var(--border-light) var(--border-dark) var(--border-dark) var(--border-light);
+    box-shadow: 1px 1px 0px 1px var(--border-dark); /* Outer shadow for depth */
+    width: 450px; /* Adjust width as needed for login form */
+    max-width: 90vw; /* Prevent it from being too wide on small screens */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    display: flex; /* Use flexbox for direct children (title-bar, window-body) */
+    flex-direction: column; /* Stack children vertically */
+}
+
+/* Main Window Container (This is now the full-screen mail client application) */
+.main-window {
+    background-color: var(--window-bg);
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    /* Removed border and shadow here, as the body provides the 'window' look */
+    border: none;
+    box-shadow: none;
+}
+
+/* Title Bar Styling - Applies to both main window and message box */
+.title-bar {
+    background-color: var(--title-bar-color); /* Uniform dark blue */
+    padding: 3px 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: default;
+    /* Use classic 3D border for the title bar itself */
+    border-bottom: 2px solid;
+    border-color: var(--border-dark) var(--border-light) var(--border-light) var(--border-dark);
+}
+
+.title-bar-text {
+    flex-grow: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-left: 2px; /* Small padding to prevent text from touching left edge */
+}
+
+.title-bar-controls {
+    display: flex;
+    gap: 2px;
+}
+
+/* Styling for the control buttons in the title bar */
+.title-bar-controls button {
+    width: 20px;
+    height: 18px;
+    background-color: var(--button-face);
+    border: 2px solid;
+    border-color: var(--border-light) var(--border-dark) var(--border-dark) var(--border-light);
+    padding: 0;
+    cursor: pointer;
+    position: relative;
+    font-size: 14px;
+    line-height: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.5);
+}
+
+/* Active (pressed) state for title bar control buttons */
+.title-bar-controls button:active {
+    border-color: var(--border-dark) var(--border-light) var(--border-light) var(--border-dark);
+    box-shadow: inset 1px 1px 0px var(--border-dark);
+    transform: translate(1px, 1px);
+}
+
+/* Symbols for title bar buttons */
+.title-bar-controls button[aria-label="Minimize"]::before { content: '−'; }
+.title-bar-controls button[aria-label="Maximize"]::before { content: '□'; }
+.title-bar-controls button[aria-label="Close"]::before { content: '×'; }
+
+/* Specific styling for the Help button */
+.title-bar-controls button.help-button::before {
+    content: '?'; /* Add the question mark for the help button */
+    display: block;
+}
+
+.title-bar.center-title {
+    justify-content: center;
+}
+
+.title-bar.center-title .title-bar-text {
+    text-align: center;
+    flex-grow: 0; /* prevent stretching */
+}
+
+
+/* --- TOOLBAR STYLES --- */
+.toolbar {
+    background-color: var(--window-bg);
+    padding: 5px;
+    display: flex;
+    gap: 5px;
+    border-bottom: 2px solid var(--border-dark); /* Dark border below toolbar */
+    border-top: 2px solid var(--border-light); /* Light border above toolbar */
+    box-shadow: inset 1px 1px 0px var(--border-dark); /* Inset shadow for depth */
+}
+
+/* Reusing classic-button styles for toolbar buttons */
+.toolbar .classic-button {
+    padding: 3px 10px; /* Slightly smaller padding for toolbar buttons */
+    min-width: unset; /* Allow buttons to size to content */
+    font-size: 13px; /* Toolbar button font size */
+}
+
+
+/* --- MAIN CONTENT AREA (Folders + Mail List) --- */
+.content-area {
+    display: flex;
+    overflow: hidden;
+    flex-grow: 1; /* Allows it to fill remaining vertical space */
+    background-color: var(--window-bg); /* Ensure background is consistent */
+}
+
+/* Left Pane (Folders/Navigation) */
+.left-pane {
+    flex-basis: 200px; /* Fixed width for the left pane */
+    flex-shrink: 0; /* Prevent shrinking */
+    padding: 5px;
+    border-right: 2px solid; /* Separator from right pane */
+    border-color: var(--border-dark) var(--border-light) var(--border-light) var(--border-dark); /* Inset/raised look */
+    background-color: var(--window-bg);
+    overflow-y: auto; /* Enable scrolling for folders */
+    box-shadow: inset 1px 1px 0px var(--border-dark); /* Inner shadow for inset look */
+    scroll-behavior: smooth;
+}
+
+.pane-title {
+    font-weight: bold;
+    padding: 5px;
+    margin-bottom: 5px;
+    background-color: #E0E0E0; /* Slightly different background for title */
+    border: 1px solid;
+    border-color: var(--border-dark) var(--border-light) var(--border-light) var(--border-dark); /* Inset effect */
+    box-shadow: inset 1px 1px 0px var(--border-dark);
+}
+
+.folder-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.folder-item {
+    padding: 4px 8px;
+    cursor: pointer;
+    margin-bottom: 2px;
+    border: 1px solid transparent; /* Placeholder for active border */
+    font-size: 13px;
+}
+
+.folder-item:hover {
+    background-color: #EBEBEB; /* Slight highlight on hover */
+}
+
+.folder-item.active {
+    background-color: var(--active-folder-bg);
+    color: var(--active-folder-text);
+    border: 1px solid;
+    border-color: var(--border-light) var(--border-dark) var(--border-dark) var(--border-light); /* Raised effect when active */
+    box-shadow: inset 1px 1px 0px rgba(0, 0, 0, 0.2); /* Inner dark shadow */
+    font-weight: bold;
+}
+
+/* Right Pane (Email List) */
+.right-pane {
+    flex-grow: 1; /* Takes remaining horizontal space */
+    padding: 10px;
+    background-color: var(--window-bg);
+    overflow-y: auto; /* Enable scrolling for emails */
+    scroll-behavior: smooth;
+    max-height: 100%;
+}
+
+.mail-item {
+    margin-bottom: 15px;
+    padding: 8px;
+    background-color: var(--window-bg); /* Base color for mail item */
+    font-size: 13px;
+    color: var(--text-color);
+}
+
+.mail-header {
+    margin-bottom: 5px;
+    padding: 5px;
+    background-color: #D4D4D4; /* Lighter grey for mail header block */
+    border: 1px solid;
+    border-color: var(--border-dark) var(--border-light) var(--border-light) var(--border-dark); /* Inset effect */
+    box-shadow: inset 1px 1px 0px var(--border-dark);
+}
+
+.mail-header strong {
+    margin-right: 5px;
+    font-size: 13px; /* Ensure strong labels are same size */
+}
+
+.mail-from, .mail-date, .mail-to, .mail-cc, .mail-subject {
+    font-weight: normal; /* Ensure the values are not bold by default */
+}
+
+
+.mail-preview {
+    background-color: var(--input-bg); /* White background for preview content */
+    padding: 8px;
+    border: 1px solid;
+    border-color: var(--input-border-inset-dark) var(--input-border-inset-light) var(--input-border-inset-light) var(--input-border-inset-dark); /* Inset border for preview */
+    box-shadow: inset 1px 1px 0px var(--input-border-inset-dark);
+    margin-top: 5px;
+    min-height: 50px; /* Give it some minimum height */
+    overflow-y: auto; /* Allow preview to scroll if content is long */
+    font-size: 13px;
+}
+
+.mail-preview-content {
+    /* If the content within mail.preview requires its own scrolling, apply classic-scrollable here */
+    /* For simplicity, if the outer mail-preview is scrollable, this might not need specific scrollbar styling unless desired */
+    padding-right: 2px; /* Small adjustment for scrollbar space if any */
+}
+
+.mail-divider {
+    border: none;
+    border-top: 1px solid var(--border-dark); /* Dark line */
+    border-bottom: 1px solid var(--border-light); /* Light line */
+    margin: 15px 0; /* Space around the divider */
+}
+
+.no-mail-message {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+    font-style: italic;
+}
+
+/* Reusing generic classic element styles defined previously */
+
+/* Window Body (main content area for login box, re-used generic parts) */
+.window-body { /* This applies to the login.html's window body */
+    padding: 25px;
+    color: var(--text-color);
+    flex-grow: 1; /* Allow it to take available vertical space if window is flexible */
+    display: flex; /* Crucial for centering the form within the window body */
+    flex-direction: column; /* Stack form groups vertically */
+    justify-content: center; /* Center vertically within the window-body */
+    align-items: center; /* Center horizontally within the window-body */
+}
+
+/* Form Group for label-input pairs (for login.html) */
+.form-group { /* Existing style for login.html */
+    display: flex;
+    align-items: center; /* Vertically align label and input */
+    margin-bottom: 15px;
+    width: 100%; /* Take full width of its parent (.window-body) */
+    max-width: 350px; /* Constrain the overall width of the form group */
+    justify-content: center; /* Center the label/input pair if max-width is hit */
+}
+
+.form-group label { /* Existing style for login.html */
+    flex-shrink: 0; /* Prevent label from shrinking */
+    width: 130px; /* Fixed width for labels */
+    text-align: right;
+    margin-right: 15px;
+    white-space: nowrap;
+    font-size: 14px;
+}
+
+/* Classic Input Field Styling (for login.html) */
+.classic-input { /* Existing style for login.html */
+    flex-grow: 1;
+    background-color: var(--input-bg);
+    border: 1px solid;
+    border-color: var(--input-border-inset-dark) var(--input-border-inset-light) var(--input-border-inset-light) var(--input-border-inset-dark);
+    padding: 4px 6px;
+    outline: none;
+    box-shadow: inset 1px 1px 0px var(--input-border-inset-dark);
+    font-family: 'Tahoma', 'Arial', sans-serif;
+    font-size: 14px;
+    max-width: calc(100% - 145px); /* Calculate max width based on label width + margin */
+}
+
+.classic-input:focus { /* Existing style for login.html */
+    border-color: var(--focus-border);
+}
+
+.classic-input:disabled { /* Existing style for login.html */
+    background-color: #E0E0E0;
+    color: #808080;
+    border-color: #C0C0C0 #C0C0C0 #C0C0C0 #C0C0C0;
+    box-shadow: none;
+}
+
+/* Button Group for aligning buttons (for login.html) */
+.button-group { /* Existing style for login.html */
+    display: flex;
+    justify-content: center; /* Center the buttons horizontally */
+    gap: 10px;
+    margin-top: 30px;
+    width: 100%; /* Ensure button group spans full width of parent */
+}
+
+/* Classic Button Styling (General, re-used by both login and inbox) */
+.classic-button {
+    background-color: var(--button-face);
+    border: 2px solid;
+    border-color: var(--border-light) var(--border-dark) var(--border-dark) var(--border-light);
+    padding: 7px 20px;
+    font-family: 'Tahoma', 'Arial', sans-serif;
+    font-size: 14px;
+    color: var(--button-text);
+    cursor: pointer;
+    min-width: 90px;
+    text-align: center;
+    outline: none;
+    text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.5);
+}
+
+.classic-button:hover {
+    filter: brightness(1.05);
+}
+
+.classic-button:active {
+    border-color: var(--border-dark) var(--border-light) var(--border-light) var(--border-dark);
+    box-shadow: inset 1px 1px 0px var(--border-dark);
+    transform: translate(1px, 1px);
+}
+
+/* Special styling for the default action button */
+.classic-button.default-button {
+    border: 2px solid #000000;
+    padding: 5px 18px;
+    position: relative;
+    z-index: 1;
+}
+
+.classic-button.default-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 2px solid;
+    border-color: var(--border-light) var(--border-dark) var(--border-dark) var(--border-light);
+    box-sizing: border-box;
+    z-index: -1;
+}
+
+.classic-button.default-button:active::before {
+    border-color: var(--border-dark) var(--border-light) var(--border-light) var(--border-dark);
+}
+
+
+/* --- New Styles for the Message Box (if still used) --- */
+.message-window {
+    background-color: var(--window-bg);
+    border: 2px solid;
+    border-color: var(--border-light) var(--border-dark) var(--border-dark) var(--border-light);
+    box-shadow: 1px 1px 0px 1px var(--border-dark);
+    width: 400px;
+    box-sizing: border-box;
+    display: none;
+    flex-direction: column;
+
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+}
+
+.message-window .title-bar-text {
+    font-size: 14px;
+}
+
+.message-text {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 25px;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* Classic scrollbar ONLY for right-pane */
+.right-pane.classic-scrollable::-webkit-scrollbar {
+  width: 16px;
+}
+
+.right-pane.classic-scrollable::-webkit-scrollbar-track {
+  background: #C0C0C0;
+  border: 1px solid #808080;
+}
+
+.right-pane.classic-scrollable::-webkit-scrollbar-thumb {
+  background: #D4D0C8;
+  border: 2px solid #FFFFFF;
+  border-left-color: #808080;
+  border-top-color: #808080;
+}
+
+.right-pane.classic-scrollable::-webkit-scrollbar-button:vertical:increment::before {
+  content: "";
+  border-top: 5px solid black;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  display: block;
+  margin: auto;
+  width: 0;
+  height: 0;
+}
+
+.right-pane.classic-scrollable::-webkit-scrollbar-button:vertical:decrement::before {
+  content: "";
+  border-bottom: 5px solid black;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  display: block;
+  margin: auto;
+  width: 0;
+  height: 0;
+}
+
+.right-pane.classic-scrollable::-webkit-scrollbar-button {
+  height: 16px;
+  background-color: #D4D0C8;
+  border: 2px solid #FFFFFF;
+  border-left-color: #808080;
+  border-top-color: #808080;
+}
+
+.bottom-bar {
+    background-color: var(--title-bar-color);
+    padding: 3px 5px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    border-top: 2px solid;
+    border-color: var(--border-light) var(--border-dark) var(--dark) var(--light);
+    height: 28px;
+}
+
+/* Safe Email Background */
+.mail-item.safe {
+    background-color: #d6ffd6;
+    padding: 8px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+
+/* Phishing Email Background */
+.mail-item.phishing {
+    background-color: #ffd6d6;
+    padding: 8px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+
+/* Warning Banner */
+.warning-banner {
+    background-color: #ff4d4d;
+    color: white;
+    font-weight: bold;
+    padding: 6px;
+    border-radius: 4px;
+    margin-bottom: 5px;
+}
+
+.mail-item:hover {
+    background-color: #d0e8ff;
+    transition: background-color 0.2s ease-in-out;
+}
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.mail-body a {
+  color: #1a0dab;
+  text-decoration: underline;
+}
+
+.modal {
+    background-color: var(--window-bg);
+    border: 2px solid;
+    border-color: var(--border-light) var(--border-dark) var(--border-dark) var(--border-light);
+    box-shadow: 1px 1px 0px 1px var(--border-dark);
+    width: 400px;
+    box-sizing: border-box;
+    display: none;
+    flex-direction: column;
+
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+}
+
+.modal .modal-header {
+     background-color: var(--title-bar-color); /* Uniform dark blue */
+    padding: 3px 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: default;
+    /* Use classic 3D border for the title bar itself */
+    border-bottom: 2px solid;
+    border-color: var(--border-dark) var(--border-light) var(--border-light) var(--border-dark);
+}
+
+.modal .modal-header .close-btn {
+    background: #C0C0C0;
+    border: 1px solid black;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 0 6px;
+}
+
+.modal .modal-content {
+    padding: 25px;
+    color: var(--text-color);
+    flex-grow: 1; /* Allow it to take available vertical space if window is flexible */
+    display: flex; /* Crucial for centering the form within the window body */
+    flex-direction: column; /* Stack form groups vertically */
+    justify-content: center; /* Center vertically within the window-body */
+    align-items: center; /* Center horizontally within the window-body */
+}
+
+.modal .ok-button {
+    margin: 12px auto 8px auto;
+    display: block;
+    padding: 2px 20px;
+    font-size: 13px;
+    border: 2px solid #000;
+    background-color: #C0C0C0;
+    box-shadow: inset -1px -1px 0 #fff, inset 1px 1px 0 #808080;
+    font-weight: bold;
+    cursor: pointer;
+}
