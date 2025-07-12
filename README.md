@@ -4,7 +4,7 @@
 
 ---
 
-## 🚀 Features
+## Features
 
 - Gmail IMAP integration (Inbox, Compose, Drafts)
 - Phishing detection with TF-IDF + Logistic Regression
@@ -13,6 +13,7 @@
 - Secure CID inline image rendering
 - Docker-based antivirus scanning of attachments
 - Secure viewing of attachments in separate Docker containers
+- Password are stored using hashing 
 
 ---
 
@@ -64,7 +65,7 @@ SafeMailBox uses **separate Docker containers for each operation** to ensure com
   - Only the rendered view is shown in the browser
   - The container is shut down immediately after use
 
-> 🔐 This protects against exploits hidden in document macros, scripts, or malformed files — nothing runs on the host.
+> This protects against exploits hidden in document macros, scripts, or malformed files — nothing runs on the host.
 
 | Operation | Container        | Purpose                         |
 |-----------|------------------|---------------------------------|
@@ -89,5 +90,5 @@ The phishing detector uses traditional ML:
    - **Mark as Phishing**
 3. Feedback is logged with:
    - Model prediction, user response, email metadata
-4. Stored in `feedback_log.csv` or a database
+4. Stored in `feedback_log.csv`
 5. Used to retrain the model and improve performance
