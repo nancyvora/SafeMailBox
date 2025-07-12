@@ -92,3 +92,57 @@ The phishing detector uses traditional ML:
    - Model prediction, user response, email metadata
 4. Stored in `feedback_log.csv`
 5. Used to retrain the model and improve performance
+
+## Setup Instructions
+
+### 1. Add Your Email Credentials
+
+Add email address and app password in the insert_user.py 
+
+### 2. Initialize the Database
+
+python setup_db.py
+python models.py
+python insert_user.py
+
+### 3. Fetch Emails 
+
+python email_fetcher.py
+
+This will:
+
+Connect to Gmail inbox via IMAP
+Fetch and sanitize HTML
+Extract inline CID images
+Store emails and attachments
+
+### 4. Run the Flask Web App
+
+python app.py
+
+### 5. Export Feedback for Retraining
+
+python feedback_export.py
+
+*start your docker before proceeding for the below commands*
+
+### 6. Docker: Attachment Scanner
+
+docker build -t yara-scanner .
+docker run -d -p 5001:5000 --name yara-scanner yara-scanner #assuming your local webiste is on port 5000
+
+### 7. Docker: Attachment Viewer
+
+docker build -t sandbox-viewer viewer-docker/
+docker run -d -p 5002:5000 --name sandbox-viewer sandbox-viewer
+
+## Visuals 
+
+<img width="959" height="471" alt="image" src="https://github.com/user-attachments/assets/40459b95-77a5-4c94-b023-dd4935dfbf2e" />
+<img width="1919" height="880" alt="Screenshot 2025-07-12 094334" src="https://github.com/user-attachments/assets/913db206-cc6a-4f62-bf88-19cf133d4900" />
+<img width="959" height="437" alt="image" src="https://github.com/user-attachments/assets/e063f6ff-604b-482d-91ed-87cab32de9e2" />
+<img width="1915" height="930" alt="Screenshot 2025-07-11 224105" src="https://github.com/user-attachments/assets/81013347-c7a5-4f5a-ad9e-38980747f2ed" />
+<img width="1919" height="947" alt="Screenshot 2025-07-11 224123" src="https://github.com/user-attachments/assets/8ebc848a-df15-41dd-8eed-98edb9ebf278" />
+
+
+
